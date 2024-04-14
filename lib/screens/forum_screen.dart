@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mind_matters/component/add_post.dart';
 import 'package:mind_matters/component/room_item.dart';
 
 import 'package:mind_matters/data/thread_dummydata.dart';
@@ -10,10 +11,14 @@ class Rooms extends StatefulWidget {
 }
 
 class _RoomState extends State<Rooms> {
+  void addPostOverlay(){
+    showModalBottomSheet(context: context, builder: (context)=>AddPost());
+
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColorLight,
+    color: Theme.of(context).colorScheme.secondary,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
@@ -25,13 +30,13 @@ class _RoomState extends State<Rooms> {
                   itemCount: thread.length,
                 ),
                 Positioned(
-                      bottom: 16,
-                      right: 16,
+                    bottom: 0,
+                    right: 0,
                     child: Padding(
-                    padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       child: FloatingActionButton(
-                        backgroundColor: Theme.of(context).primaryColorDark,
-                        onPressed: () {},
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        onPressed: addPostOverlay,
                         child: Icon(Icons.add),
                       ),
                     ))

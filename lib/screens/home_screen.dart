@@ -13,16 +13,17 @@ class _HomePageState extends State<HomePage>{
       _selected_index=index;
     });
   }
- final List<Widget> _pages=[Rooms(),Container(child: Text("Search"),),Container(child: Text("Chat"),),Container(child: Text("Profile"),)];
+ final List<Widget> _pages=[Rooms(),Container(color: Color.fromRGBO(175, 200, 173, 1),child: Text("Search"),),Container(child: Text("Chat"),),Container(child: Text("Profile"),)];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset:true,
       appBar: AppBar(
         title: const Text(
           "Mind Matter",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: _pages[_selected_index],
       bottomNavigationBar: BottomNavigationBar(
@@ -39,3 +40,4 @@ class _HomePageState extends State<HomePage>{
     );
   }
 }
+
