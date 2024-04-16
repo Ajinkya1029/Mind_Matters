@@ -18,11 +18,11 @@ class _AddPostState extends State<AddPost> {
 
   Widget build(BuildContext context) {
     double _screen_height = MediaQuery.of(context).size.height *0.5;
-    return SingleChildScrollView(
-      child: Padding(
+    return  Padding(
         
         padding: const EdgeInsets.fromLTRB(18, 25, 18, 20),
         child: Container(
+          color: Theme.of(context).colorScheme.background,
           height: _screen_height,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -43,7 +43,6 @@ class _AddPostState extends State<AddPost> {
                     child: Text("Submit")),
               ]),
         ),
-      ),
-    );
+      );
   }
 }
