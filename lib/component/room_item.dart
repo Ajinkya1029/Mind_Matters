@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:mind_matters/models/room_model.dart';
 
@@ -65,34 +63,61 @@ class _RoomItemState extends State<RoomItem> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.black)),
-                height: 35,
+                height: 40,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Row(
-                    // mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              like == 1 ? like = 0 : like = 1;
-                            });
-                          },
-                          child: like == 1
-                              ? const Icon(Icons.thumb_up)
-                              : const Icon(Icons.thumb_up_alt_outlined)),
+                        onTap: () {
+                          setState(() {
+                            like == 1 ? {like = 0,widget.room.likes-=1} : {like = 1,widget.room.likes+=1};
+                            
+                          });
+                        },
+                        child: like == 1
+                            ? Column(
+                                children: <Widget>[
+                                  const Expanded(child:  Icon(Icons.thumb_up)),
+                                  Text("${widget.room.likes}")
+                                ],
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  const Expanded(
+                                      child:  Icon(
+                                          Icons.thumb_up_alt_outlined)),
+                                  Text("${widget.room.likes}")
+                                ],
+                              ),
+                      ),
                       const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            like == 2 ? like = 0 : like = 2;
+                            like == 2 ? {like = 0,widget.room.likes+=1 }: {like = 2,widget.room.likes-=1};
                           });
                         },
                         child: like == 2
-                            ? const Icon(Icons.thumb_down)
-                            : const Icon(Icons.thumb_down_outlined),
+                            ? Column(
+                                children: <Widget>[
+                                  const Expanded(child:  Icon(Icons.thumb_down)),
+                                  Text("${widget.room.likes}")
+                                ],
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  const Expanded(
+                                    child:
+                                        Icon(Icons.thumb_down_outlined),
+                                  ),
+                                  Text("${widget.room.likes}")
+                                ],
+                              ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       GestureDetector(
                         onTap: () {},
                         child: const Icon(Icons.share),
@@ -106,3 +131,5 @@ class _RoomItemState extends State<RoomItem> {
     );
   }
 }
+  
+  //                           : 

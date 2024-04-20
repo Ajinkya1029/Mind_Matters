@@ -3,6 +3,6 @@ class Thread{
   Thread({required this.parentRoom,required this.title,required this.subThread});
    final Room parentRoom ;
    final String title;
-   final Thread? subThread;
+   final List<Thread>? subThread;
    
 }
