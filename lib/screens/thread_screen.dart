@@ -29,12 +29,8 @@ class _ThreadScreenState extends State<ThreadScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             RoomItem(widget.room, widget.showThread),
-            // Expanded(child: ListView.builder(
-            //   itemBuilder: (ctx,index) =>
-            //       Container(child: Text("${dummythreadP[index].title}")),
-            //       itemCount: dummythreadP.length,
-            // ),)
-            Expanded(child:ListView.builder(itemBuilder: (ctx,index)=>ThreadRender(dummythreadP[index], 1),itemCount: dummythreadP.length,)),
+            
+            Expanded(child:Padding(padding: EdgeInsets.all(10),child: ListView.builder(itemBuilder: (ctx,index)=>ThreadRender(dummythreadP[index]),itemCount: dummythreadP.length,),)),
             // ThreadRender(dummythreadP[1]),
           ],
         ));

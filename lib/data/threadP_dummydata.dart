@@ -5,6 +5,8 @@ import 'package:mind_matters/data/rooms_dummydata.dart';
 var dummythreadP = [
   Thread(parentRoom: thread[0], title: "Micheal Myers Broken", subThread: [
     Thread(parentRoom: thread[0], title: "Plague is broken", subThread: [
+      Thread(parentRoom: thread[0], title: "Yeah right", subThread: []),
+      Thread(parentRoom: thread[0], title: "Yeah right", subThread: []),
       Thread(parentRoom: thread[0], title: "Yeah right", subThread: [])
     ]),
     Thread(parentRoom: thread[0],  title: "Free id for sale", subThread: []),
