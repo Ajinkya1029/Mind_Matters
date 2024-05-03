@@ -1,13 +1,4 @@
 import '../models/room_model.dart';
 var thread=[
-  Room(owner: "Ajinkya",roomId: "123",roomName: "Dbd",picture: "asd",postedat: DateTime.now(),likes: 100),
-  Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "", postedat: DateTime.now(),likes: 100),
-   Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "asda", postedat: DateTime.now(),likes: 100),
-   Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "", postedat: DateTime.now(),likes: 100),
-   Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "", postedat: DateTime.now(),likes: 100),
-   Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "asdad", postedat: DateTime.now(),likes: 100),
-   Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "", postedat: DateTime.now(),likes: 100),
-   Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "", postedat: DateTime.now(),likes: 100),
-   Room(roomId: "321", roomName: "Flutter", owner: "Taher", picture: "assad", postedat: DateTime.now(),likes: 100),
-
+  Room(roomId: "123", RoomName: "134132", Owner: "1243124", ThumbNail: "124124", createdAt: "1241", updatedAt: "124412", UpVotes: 1, DownVotes: 2)
 ];

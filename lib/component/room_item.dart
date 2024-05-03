@@ -32,16 +32,16 @@ class _RoomItemState extends State<RoomItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "${widget.room.roomName}",
+                    "${widget.room.RoomName}",
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
-                    "${widget.room.owner}",
+                    "${widget.room.Owner}",
                     style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],
               )),
-              widget.room.picture.isNotEmpty
+              widget.room.ThumbNail!.isNotEmpty
                   ? SizedBox(
                       height: 300,
                       width: double.maxFinite,
@@ -73,7 +73,7 @@ class _RoomItemState extends State<RoomItem> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            like == 1 ? {like = 0,widget.room.likes-=1} : {like = 1,widget.room.likes+=1};
+                            like == 1 ? {like = 0,widget.room.UpVotes-=1} : {like = 1,widget.room.UpVotes+=1};
                             
                           });
                         },
@@ -81,7 +81,7 @@ class _RoomItemState extends State<RoomItem> {
                             ? Column(
                                 children: <Widget>[
                                   const Expanded(child:  Icon(Icons.thumb_up)),
-                                  Text("${widget.room.likes}")
+                                  Text("${widget.room.UpVotes}")
                                 ],
                               )
                             : Column(
@@ -89,7 +89,7 @@ class _RoomItemState extends State<RoomItem> {
                                   const Expanded(
                                       child:  Icon(
                                           Icons.thumb_up_alt_outlined)),
-                                  Text("${widget.room.likes}")
+                                  Text("${widget.room.UpVotes}")
                                 ],
                               ),
                       ),
@@ -97,14 +97,14 @@ class _RoomItemState extends State<RoomItem> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            like == 2 ? {like = 0,widget.room.likes+=1 }: {like = 2,widget.room.likes-=1};
+                            like == 2 ? {like = 0,widget.room.DownVotes-=1 }: {like = 2,widget.room.DownVotes+=1};
                           });
                         },
                         child: like == 2
                             ? Column(
                                 children: <Widget>[
                                   const Expanded(child:  Icon(Icons.thumb_down)),
-                                  Text("${widget.room.likes}")
+                                  Text("${widget.room.DownVotes}")
                                 ],
                               )
                             : Column(
@@ -113,7 +113,7 @@ class _RoomItemState extends State<RoomItem> {
                                     child:
                                         Icon(Icons.thumb_down_outlined),
                                   ),
-                                  Text("${widget.room.likes}")
+                                  Text("${widget.room.DownVotes}")
                                 ],
                               ),
                       ),
