@@ -30,7 +30,7 @@ Future<List<Thread>> fetchData ()async{
 
       final response = await http.get(
           Uri.parse(
-             "http://mindmattersapp-env-2.eba-rhfxjbmn.us-east-1.elasticbeanstalk.com/threads/getThread?id=6630ce832e3edbc101db67b9"),
+             "http://taher-basrai-mind-matters.us-east-1.elasticbeanstalk.com/threads/getThread?id=${widget.room.roomId}"),
           headers: <String, String>{
             'Content-Type': "application/json; charset=UTF-8",
             'Authorization':
@@ -38,6 +38,7 @@ Future<List<Thread>> fetchData ()async{
           });
 if(response.statusCode==200){
   List<Map<String,Object?>>data=json.decode(response.body).map<Map<String,Object?>>((element)=>element as Map<String,Object?>).toList();
+  print(data);
   List<Thread>thread=data.map((e) => Thread.fromJson(e)).toList();
   return thread;
 }else{
@@ -64,13 +65,13 @@ if(response.statusCode==200){
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              RoomItem(widget.room, widget.showThread),
+              RoomItem(widget.room, widget.showThread,false),
 
              FutureBuilder<List<Thread>>(future:_threadFuture , builder: (context,snapshot){
               if(snapshot.connectionState==ConnectionState.waiting){
                 return Center(child: CircularProgressIndicator(),);
               }else if(snapshot.hasError){
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return SnackBar(content: Center(child: Text("Network Issue"),));
               }else{
                 List<Thread>thread=snapshot.data!;
                 return Padding(padding: EdgeInsets.all(10),child: ListView.builder(

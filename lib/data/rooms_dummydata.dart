@@ -1,4 +1,59 @@
 import '../models/room_model.dart';
-var thread=[
-  Room(roomId: "123", RoomName: "134132", Owner: "1243124", ThumbNail: "124124", createdAt: "1241", updatedAt: "124412", UpVotes: 1, DownVotes: 2)
+
+var thread = [
+  Room(
+      roomId: "123",
+      RoomName: "134132",
+      Owner: "1243124",
+      ThumbNail: "https://picsum.photos/200/300",
+      createdAt: "1241",
+      updatedAt: "124412",
+      UpVotes: 1,
+      DownVotes: 2,
+      OwnerPP: "",
+      comment: 0),
+  Room(
+      roomId: "123",
+      RoomName: "134132",
+      Owner: "1243124",
+      ThumbNail: "",
+      createdAt: "1241",
+      updatedAt: "124412",
+      UpVotes: 1,
+      DownVotes: 2,
+      OwnerPP: "",
+      comment: 0),
+  Room(
+      roomId: "123",
+      RoomName: "134132",
+      Owner: "1243124",
+      ThumbNail: "https://mind-matters-bucket.s3.amazonaws.com/public%5Cdomainexpansion.jpg",
+      createdAt: "1241",
+      updatedAt: "124412",
+      UpVotes: 1,
+      DownVotes: 2,
+      OwnerPP: "",
+      comment: 0),
+  Room(
+      roomId: "123",
+      RoomName: "134132",
+      Owner: "1243124",
+      ThumbNail: "https://picsum.photos/id/227/200/300",
+      createdAt: "1241",
+      updatedAt: "124412",
+      UpVotes: 1,
+      DownVotes: 2,
+      OwnerPP: "",
+      comment: 0),
+  Room(
+      roomId: "123",
+      RoomName: "134132",
+      Owner: "1243124",
+      ThumbNail: "",
+      createdAt: "1241",
+      updatedAt: "124412",
+      UpVotes: 1,
+      DownVotes: 2,
+      OwnerPP: "",
+      comment: 0),
 ];

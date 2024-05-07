@@ -27,19 +27,19 @@ class _ThreadRenderState extends State<ThreadRender> {
 if((widget.lev==0&&widget.call==0)) {
   
   
- pad=EdgeInsets.only(left: widget.indent+ indentation,top: 5,bottom: 5);
+ pad=EdgeInsets.only(left: widget.indent+ indentation,top: 5,bottom: 5,right: indentation+3);
 }   
 else if(widget.lev==0&&widget.call!=0)   {
-     pad=EdgeInsets.only(left: widget.indent+ indentation,top: 40,bottom: 5);
+     pad=EdgeInsets.only(left: widget.indent+ indentation,top: 40,bottom: 5,right: indentation+3);
      }else{
-      pad=EdgeInsets.only(left: widget.indent+ indentation,top: 5,bottom: 5);
+      pad=EdgeInsets.only(left: widget.indent+ indentation,top: 5,bottom: 5,right: indentation+3);
      }
 
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-       Comment(title: widget.thread.Value, pad: pad),
+       Comment(thread: widget.thread, pad: pad),
     
              
    

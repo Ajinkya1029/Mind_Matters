@@ -10,15 +10,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _selected_index=0;
+  bool _isLoading = true;
+  var _selected_index = 0;
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selected_index = index;
-   
-
     });
   }
- 
+
   final List<Widget> _pages = [
     Rooms(),
     SearchScreen(),
@@ -30,32 +38,38 @@ class _HomePageState extends State<HomePage> {
     ),
     AddPost()
   ];
-  
+
   @override
   Widget build(BuildContext context) {
-    
- 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: const Text(
-          "Mind Matter",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: _pages[_selected_index],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selected_index,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chat"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
-        ],
-      ),
-    );
+    return _isLoading
+        ? Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            body: Center(child: Image.asset('assets/main-logo.png'),),
+            
+          )
+        : Scaffold(
+            resizeToAvoidBottomInset: true,
+            appBar: AppBar(
+              title: const Text(
+                "Mind Matter",
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+            body: _pages[_selected_index],
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _selected_index,
+              onTap: _onItemTapped,
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.search), label: "Search"),
+                BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chat"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: "Profile")
+              ],
+            ),
+          );
   }
 }

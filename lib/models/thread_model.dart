@@ -14,13 +14,7 @@ class Thread{
 
    factory Thread.fromJson(Map<String,dynamic>json){
   
-// print(json['UserId']);
-// print(json['ParentId']);
-// print(json['Value']);
-// print(json['RoomId']);
-// print(json['Likes']);
-// print(json['createdAt']);
-// print(json['updatedAt']);
+
  
   
     return Thread(

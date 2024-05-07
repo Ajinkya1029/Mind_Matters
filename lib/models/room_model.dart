@@ -8,13 +8,17 @@ class Room {
       required this.createdAt,
       required this.updatedAt,
       required this.UpVotes,
-      required this.DownVotes});
+      required this.DownVotes,
+      required this.OwnerPP,
+      required this.comment});
   final String roomId;
   final String RoomName;
   final String Owner;
   final String ThumbNail;
   final String createdAt;
   final String updatedAt;
+  final String OwnerPP;
+  int comment;
  int UpVotes;
   int DownVotes;
 
@@ -24,11 +28,15 @@ class Room {
 
         UpVotes: json['UpVotes']?? '',
         roomId: json['_id']?? '',
-        Owner: json['Owner']?? '',
+        Owner: json['ownerName']?? '',
         ThumbNail: json['ThumbNail']?? '',
         createdAt: json['createdAt']?? '',
         updatedAt: json['updatedAt']?? '',
         RoomName: json['RoomName']?? '',
-        DownVotes: json['DownVotes']?? '');
+        DownVotes: json['DownVotes']?? '',
+        OwnerPP:  json['ownerPP']?? '',
+        comment: json['commentsCount']?? '',
+        );
   }
 }
+// Make owner as List of Sttring?
