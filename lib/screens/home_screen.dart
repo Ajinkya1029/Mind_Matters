@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mind_matters/screens/forum_screen.dart';
 import 'package:mind_matters/component/add_post.dart';
 import 'package:mind_matters/screens/search_screen.dart';
+import 'package:mind_matters/screens/profile_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -33,10 +34,9 @@ class _HomePageState extends State<HomePage> {
     Container(
       child: Text("Chat"),
     ),
-    Container(
-      child: Text("Profile"),
-    ),
-    AddPost()
+   ProfileScreen(),
+    
+  
   ];
 
   @override

@@ -4,11 +4,12 @@ import 'package:mind_matters/component/comment_block.dart';
 import 'package:mind_matters/models/thread_model.dart';
 
 class ThreadRender extends StatefulWidget {
-  ThreadRender(this.thread, this.indent,this.lev,this.call, {super.key});
+  ThreadRender(this.thread, this.indent,this.lev,this.call,this.replyThread, {super.key});
   final Thread thread;
   final double indent;
   final double lev;
   final int call;
+  final Future<void>Function(Thread) replyThread;
 
   @override
   State<ThreadRender> createState() => _ThreadRenderState();
@@ -31,15 +32,17 @@ if((widget.lev==0&&widget.call==0)) {
 }   
 else if(widget.lev==0&&widget.call!=0)   {
      pad=EdgeInsets.only(left: widget.indent+ indentation,top: 40,bottom: 5,right: indentation+3);
-     }else{
+     }
+     else{
       pad=EdgeInsets.only(left: widget.indent+ indentation,top: 5,bottom: 5,right: indentation+3);
      }
 
     
     return Column(
+      
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-       Comment(thread: widget.thread, pad: pad),
+       Comment(thread: widget.thread, pad: pad,replyThread:widget.replyThread),
     
              
    
@@ -51,7 +54,7 @@ else if(widget.lev==0&&widget.call!=0)   {
                 itemCount: widget.thread.children!.length,
                 itemBuilder: (ctx, index) {
                   return ThreadRender(
-                      widget.thread.children![index], widget.indent +15,widget.lev+1,widget.call+1);
+                      widget.thread.children![index], widget.indent +15,widget.lev+1,widget.call+1,widget.replyThread);
   }),):Text(""),
         
         

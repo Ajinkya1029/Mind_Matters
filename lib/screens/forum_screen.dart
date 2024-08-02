@@ -35,58 +35,53 @@ class _RoomState extends State<Rooms> {
   }
 
   Future<List<Room>> fetchData() async {
-
-  try{
+    try {
       final response = await http.get(
-        Uri.parse(
-            "http://taher-basrai-mind-matters.us-east-1.elasticbeanstalk.com/rooms/getAll?skip=${_rooms.length}"),
-        headers: <String, String>{
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Authorization': "Token"
-        });
-    if (response.statusCode == 200) {
-      
-      List<dynamic> data = json.decode(response.body);
-      List<Room> room = data.map((e) => Room.fromJson(e)).toList();
-      return room;
-    } else {
-      
-      throw Exception('Failed to load Rooms');
-    }
-  }catch(err){
-    List<Room>data=[];
- 
-    _showSnackBar(context);
-    return data;
-   
-  }
-  }
-void _showSnackBar(BuildContext context){
-  if(mounted){
+          Uri.parse(
+              "http://mind-matters-tb.us-east-1.elasticbeanstalk.com/rooms/getAll?skip=${_rooms.length}"),
+          headers: <String, String>{
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Authorization': "Token"
+          });
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        List<Room> room = data.map((e) => Room.fromJson(e)).toList();
+        return room;
+      } else {
+        throw Exception('Failed to load Rooms');
+      }
+    } catch (err) {
+      List<Room> data = [];
 
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Theme.of(context).colorScheme.secondary,content: Text("Network Error")));
-  
+      _showSnackBar(context);
+      return data;
+    }
   }
-}
+
+  void _showSnackBar(BuildContext context) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          content: Text("Network Error")));
+    }
+  }
+
   Future<void> appendData() async {
-   
     setState(() {
       _isLoading = true;
     });
     final additionalData = await fetchData();
-    if(additionalData!=""){
-    setState(() {
-      _rooms.addAll(additionalData);
-      _isLoading = false;
-    });
-    }
-    else{
-     _showSnackBar(context);
+    if (additionalData != "") {
+      setState(() {
+        _rooms.addAll(additionalData);
+        _isLoading = false;
+      });
+    } else {
+      _showSnackBar(context);
     }
   }
 
   void _scrollListener() {
-   
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       appendData();
@@ -94,65 +89,96 @@ void _showSnackBar(BuildContext context){
   }
 
   void addPostOverlay() {
-    showModalBottomSheet(isScrollControlled:  true,context: context, builder: (context) => AddPost());
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => SingleChildScrollView(
+              child: AddPost(),
+            ));
   }
 
   void _showThread(Room room) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ThreadScreen(room, _showThread)));
+            builder: (context) => ThreadScreen(room, _showThread, _likePost)));
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      _rooms.clear();
+      _roomFuture = fetchData();
+    });
+  }
+
+  Future<void> _likePost(Room room) async {
+    try{
+      final response = await http.put(Uri.parse("${room.roomId}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Authorization': "Token"
+        },
+        body: jsonEncode(room));
+        
+    }catch(ex){
+      print("err");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                  child: Stack(children: <Widget>[
-                FutureBuilder(
-                    future: _roomFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return SnackBar(content: Center(child: Text("Network Issue"),));
-                        
-                      } else {
-                        _rooms = snapshot.data!;
-                        
-                        return ListView.builder(
-                          controller: _scrollController,
-                          itemBuilder: (ctx, index) =>
-                              RoomItem(_rooms[index], _showThread, true),
-                          itemCount: _rooms.length,
-                        );
-                      }
-                    }),
-                // ListView.builder(
-                //           controller: _scrollController,
-                //           itemBuilder: (ctx, index) =>
-                //               RoomItem(thread[index], _showThread, true),
-                //           itemCount: thread.length,
-                //         ),
-                Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: FloatingActionButton(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          onPressed: addPostOverlay,
-                          child: Icon(Icons.add),
-                        ))),
-              ]))
-            ]));
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: Container(
+          color: Colors.white,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Expanded(
+                    child: Stack(children: <Widget>[
+                  FutureBuilder(
+                      future: _roomFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text("Network Error try reloading"),
+                          );
+                        } else {
+                          _rooms = snapshot.data!;
+
+                          return ListView.builder(
+                            controller: _scrollController,
+                            itemBuilder: (ctx, index) => RoomItem(
+                                _rooms[index], _showThread, true, _likePost),
+                            itemCount: _rooms.length,
+                          );
+                        }
+                      }),
+                  // ListView.builder(
+                  //           controller: _scrollController,
+                  //           itemBuilder: (ctx, index) =>
+                  //               RoomItem(thread[index], _showThread, true),
+                  //           itemCount: thread.length,
+                  //         ),
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: FloatingActionButton(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.secondary,
+                            onPressed: addPostOverlay,
+                            child: Icon(Icons.add),
+                          ))),
+                ]))
+              ])),
+    );
 
     // ],
     // ),
