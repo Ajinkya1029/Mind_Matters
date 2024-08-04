@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mind_matters/screens/home_screen.dart';
 import 'package:mind_matters/screens/thread_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,9 +9,11 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(BuildContext context) {
+    
     MediaQuery.of(context).viewInsets.bottom;
 
     return MaterialApp(
@@ -20,10 +23,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color.fromRGBO(0, 128, 128, 1),
-          onPrimary: Color.fromRGBO(0, 128, 128, 1),
+          primary: Color.fromRGBO(65, 148, 136, 1),
+          onPrimary: Color.fromRGBO(65, 148, 136, 1),
           secondary: Color.fromRGBO(178, 216, 216, 1),
-          onSecondary: Color.fromRGBO(1, 3, 0, 1),
+          onSecondary: Color.fromRGBO(178, 216, 216, 1),
           error: Colors.black,
           onError: Colors.black,
           background: Color.fromRGBO(251, 251, 251, 1),
@@ -36,23 +39,10 @@ class MyApp extends StatelessWidget {
           selectedItemColor: Colors.black,
           backgroundColor: Color.fromRGBO(0, 128, 128, 1),
         ),
-        textTheme: const TextTheme(
-             bodyText1: TextStyle(color: Colors.black),
-          bodyText2: TextStyle(color: Colors.black),
-          headline1: TextStyle(color: Colors.black),
-          headline2: TextStyle(color: Colors.black),
-          headline3: TextStyle(color: Colors.black),
-          headline4: TextStyle(color: Colors.black),
-          headline5: TextStyle(color: Colors.black),
-          headline6: TextStyle(color: Colors.black),
-          subtitle1: TextStyle(color: Colors.black),
-          subtitle2: TextStyle(color: Colors.black),
-          caption: TextStyle(color: Colors.black),
-          button: TextStyle(color: Colors.black),
-          overline: TextStyle(color: Colors.black),
-        ),
+        textTheme:GoogleFonts.openSansTextTheme(),
         useMaterial3: true,
       ),
+       scaffoldMessengerKey: scaffoldMessengerKey,
       home: HomePage(),
     );
   }

@@ -1,56 +1,106 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mind_matters/component/comment_block.dart';
 import 'package:mind_matters/models/thread_model.dart';
 
 class ThreadRender extends StatefulWidget {
-  ThreadRender(this.thread, this.indent, {super.key});
+  ThreadRender(this.thread, this.indent, this.lev, this.call, this.replyThread,
+      {super.key});
   final Thread thread;
   final double indent;
+  final double lev;
+  final int call;
+  final Future<void> Function(Thread) replyThread;
 
   @override
   State<ThreadRender> createState() => _ThreadRenderState();
 }
 
 class _ThreadRenderState extends State<ThreadRender> {
-  bool _isExpanded=true;
   static const double indentation = 2;
 
   @override
   Widget build(BuildContext context) {
-    final EdgeInsetsGeometry pad =
-        EdgeInsets.only(left: widget.indent* indentation);
+    final EdgeInsetsGeometry pad;
+
+    if ((widget.lev == 0 && widget.call == 0)) {
+      pad = EdgeInsets.only(
+          left: widget.indent + indentation,
+          top: 5,
+          bottom: 5,
+          right: indentation + 3);
+    } else if (widget.lev == 0 && widget.call != 0) {
+      pad = EdgeInsets.only(
+          left: widget.indent + indentation,
+          top: 40,
+          bottom: 5,
+          right: indentation + 3);
+    } else {
+      pad = EdgeInsets.only(
+          left: widget.indent + indentation,
+          top: 5,
+          bottom: 5,
+          right: indentation + 3);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(padding: pad,child: Container(
-          height: 50,
-          margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          color: Theme.of(context).colorScheme.secondary,
-          width: double.infinity,
-          child: Text(widget.thread.title),
-        ),),
-       if(widget.thread.subThread!.length>2)
-       GestureDetector(onTap: (){
-        setState(() {
-          _isExpanded=!_isExpanded;
-        });
-       },child: Icon(Icons.add),),
-       
-       
-
-       
-       
-        if(_isExpanded&&widget.thread.subThread!.isNotEmpty)
-             ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: widget.thread.subThread!.length,
-                itemBuilder: (ctx, index) {
-                  return ThreadRender(
-                      widget.thread.subThread![index], widget.indent + 2);
-                })
-             
-                   ],
+        Comment(
+            thread: widget.thread, pad: pad, replyThread: widget.replyThread),
+        widget.thread.children!.isNotEmpty
+            ? CustomPaint(
+                painter: LinePainter(
+                    indent: widget.indent,
+                    height: widget.thread.children!.length.toDouble() * 60,
+                    cont: widget.thread.Value),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.thread.children!.length,
+                    itemBuilder: (ctx, index) {
+                      return ThreadRender(
+                          widget.thread.children![index],
+                          widget.indent + 15,
+                          widget.lev + 1,
+                          widget.call + 1,
+                          widget.replyThread);
+                    }),
+              )
+            : Text(""),
+      ],
     );
+  }
+}
+
+class LinePainter extends CustomPainter {
+  final double indent;
+  final double height;
+  final String cont;
+
+  LinePainter({required this.indent, required this.height, required this.cont});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.red
+      ..strokeWidth = 1;
+
+    double startX = 3 + indent.toDouble();
+    double startY = 0;
+    double endY = size.height;
+
+    double noOfLines = size.height / height.ceil();
+// print(noOfLines);
+
+    canvas.drawLine(Offset(startX, startY), Offset(startX, endY), paint);
+    //   for(int i=0;i<noOfLines;i++){
+    //  canvas.drawLine(Offset(startX,i*height+10), Offset(startX+5,i*height+10), paint);
+    //   }
+  }
+
+  @override
+  bool shouldRepaint(LinePainter oldDelegate) {
+    return false;
   }
 }
