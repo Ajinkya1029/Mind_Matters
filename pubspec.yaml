@@ -41,6 +41,13 @@ dependencies:
   permission_handler: ^11.3.1
   device_info_plus: ^10.1.0
   cached_network_image: ^3.3.1
+  image: ^3.0.1
+
+
+
+
+
+
 
 dev_dependencies:
   flutter_test:

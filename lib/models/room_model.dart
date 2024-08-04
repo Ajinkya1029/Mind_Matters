@@ -10,7 +10,9 @@ class Room {
       required this.UpVotes,
       required this.DownVotes,
       required this.OwnerPP,
-      required this.comment});
+      required this.comment,
+      required this.IsUpVote,
+      required this.IsDownVote});
   final String roomId;
   final String RoomName;
   final String Owner;
@@ -18,8 +20,10 @@ class Room {
   final String createdAt;
   final String updatedAt;
   final String OwnerPP;
+  bool IsUpVote;
+  bool IsDownVote;
   int comment;
- int UpVotes;
+  int UpVotes;
   int DownVotes;
 
   factory Room.fromJson(Map<String,dynamic > json) {
@@ -36,7 +40,9 @@ class Room {
         DownVotes: json['DownVotes']?? '',
         OwnerPP:  json['ownerPP']?? '',
         comment: json['commentsCount']?? '',
+        IsUpVote: json['isUpvote']??false,
+        IsDownVote: json['isDownVote']??false,
         );
   }
 }
-// Make owner as List of Sttring?
+// Make owner as List of Sttring? 

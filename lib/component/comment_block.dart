@@ -3,10 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:mind_matters/models/thread_model.dart';
 
 class Comment extends StatefulWidget {
-  Comment({required this.thread, required this.pad,required this.replyThread,super.key});
+  Comment(
+      {required this.thread,
+      required this.pad,
+      required this.replyThread,
+      super.key});
   final Thread thread;
   final EdgeInsetsGeometry pad;
-  final Future<void>Function(Thread) replyThread;
+  final Future<void> Function(Thread) replyThread;
   @override
   State<Comment> createState() => _CommentState();
 }
@@ -21,12 +25,18 @@ class _CommentState extends State<Comment> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Icon(Icons.account_circle),
+              ClipOval(
+                child: SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: Image.network(widget.thread.OwnerPp),
+                ),
+              ),
               const SizedBox(
                 width: 10,
               ),
               Text(
-                widget.thread.UserId,
+                widget.thread.OwnerName,
                 style: const TextStyle(fontSize: 12),
               )
             ],
@@ -35,13 +45,16 @@ class _CommentState extends State<Comment> {
             padding: const EdgeInsets.fromLTRB(2, 2, 0, 0),
             child: Text(widget.thread.Value),
           ),
-           Row(
+          Row(
             children: <Widget>[
               const Spacer(),
               IconButton(
-                onPressed: (){widget.replyThread(widget.thread);},
+                onPressed: () {
+                  widget.replyThread(widget.thread);
+                },
                 icon: const Icon(
-                  Icons.reply,color: Colors.black,
+                  Icons.reply,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(

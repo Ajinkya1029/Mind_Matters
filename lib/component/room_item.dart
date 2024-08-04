@@ -6,7 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class RoomItem extends StatefulWidget {
-  RoomItem(this.room, this.showThread, this.isClick,this.likePost, {super.key});
+  RoomItem(this.room, this.showThread, this.isClick, this.likePost,
+      {super.key});
   final Room room;
   final Function showThread;
   final bool isClick;
@@ -18,9 +19,10 @@ class RoomItem extends StatefulWidget {
 
 class _RoomItemState extends State<RoomItem> {
   int isLikes = 0;
+
   @override
   Widget build(BuildContext context) {
-     return GestureDetector(
+    return GestureDetector(
       onDoubleTap: () {
         if (widget.isClick) {
           widget.showThread(widget.room);
@@ -51,52 +53,47 @@ class _RoomItemState extends State<RoomItem> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
               child: widget.room.ThumbNail.isNotEmpty
-                  ? SizedBox(
-                      height: 300,
-                      width: double.maxFinite,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Image.network(
-                              widget.room.ThumbNail,
-                              loadingBuilder:
-                                  ((context, child, loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                } else {
-                                  return Container(
-                                    height: 280,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .primary)),
-                                    ),
-                                  );
-                                }
-                              }),
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Container(
-                                height: 280,
-                                child: Center(
-                                  child: const Icon(Icons.error),
-                                ),
-                              ),
+                  ? Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Image.network(
+                            widget.room.ThumbNail,
+                            loadingBuilder: ((context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Container(
+                                  height: 280,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary)),
+                                  ),
+                                );
+                              }
+                            }),
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
                               height: 280,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                              child: const Center(
+                                child: Icon(Icons.error),
+                              ),
                             ),
-                            Text(
-                              "${widget.room.RoomName}",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
+                            height: 300,
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                          ),
+                          Text(
+                            "${widget.room.RoomName}",
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
                       ),
                     )
                   : SizedBox(
@@ -104,7 +101,7 @@ class _RoomItemState extends State<RoomItem> {
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15)),
-                        child: Text("HI"),
+                        child: Text(""),
                       ),
                     ),
             ),
@@ -123,23 +120,28 @@ class _RoomItemState extends State<RoomItem> {
                             GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if (isLikes == 1) {
-                                      isLikes = 0;
+                                    if (widget.room.IsUpVote == true) {
                                       widget.room.UpVotes -= 1;
-                                      widget.likePost(widget.room);
-                                    } else if (isLikes == 2) {
-                                      isLikes = 1;
+                                      widget.room.IsUpVote = false;
+                                      //api call 3
+                                      widget.likePost(widget.room, 3);
+                                    } else if (widget.room.IsUpVote == false &&
+                                        widget.room.IsDownVote == false) {
                                       widget.room.UpVotes += 1;
+                                      widget.room.IsUpVote = true;
+                                      //api call 1
+                                      widget.likePost(widget.room, 1);
+                                    } else if (widget.room.IsDownVote == true) {
                                       widget.room.DownVotes -= 1;
-                                      widget.likePost(widget.room);
-                                    } else {
-                                      isLikes = 1;
+                                      widget.room.IsDownVote = false;
+                                      widget.room.IsUpVote = true;
                                       widget.room.UpVotes += 1;
-                                      widget.likePost(widget.room);
+                                      //api call 5
+                                      widget.likePost(widget.room, 5);
                                     }
                                   });
                                 },
-                                child: isLikes == 1
+                                child: widget.room.IsUpVote == true
                                     ? Icon(
                                         Icons.arrow_upward_rounded,
                                         color: Theme.of(context)
@@ -154,23 +156,28 @@ class _RoomItemState extends State<RoomItem> {
                             GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if (isLikes == 2) {
-                                      isLikes = 0;
+                                    if (widget.room.IsDownVote == true) {
                                       widget.room.DownVotes -= 1;
-                                      widget.likePost(widget.room);
-                                    } else if (isLikes == 1) {
-                                      isLikes = 2;
+                                      widget.room.IsDownVote = false;
+                                      //api call 4
+                                      widget.likePost(widget.room, 4);
+                                    } else if (widget.room.IsUpVote == false &&
+                                        widget.room.IsDownVote == false) {
+                                      widget.room.DownVotes += 1;
+                                      widget.room.IsDownVote = true;
+                                      //api call 2
+                                      widget.likePost(widget.room, 2);
+                                    } else if (widget.room.IsUpVote == true) {
+                                      widget.room.DownVotes += 1;
+                                      widget.room.IsUpVote = false;
+                                      widget.room.IsDownVote = true;
                                       widget.room.UpVotes -= 1;
-                                      widget.room.DownVotes += 1;
-                                      widget.likePost(widget.room);
-                                    } else {
-                                      isLikes = 2;
-                                      widget.room.DownVotes += 1;
-                                      widget.likePost(widget.room);
+                                      //api call 6
+                                      widget.likePost(widget.room, 6);
                                     }
                                   });
                                 },
-                                child: isLikes == 2
+                                child: widget.room.IsDownVote == true
                                     ? Icon(Icons.arrow_downward,
                                         color: Theme.of(context)
                                             .colorScheme
@@ -190,7 +197,12 @@ class _RoomItemState extends State<RoomItem> {
                         padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.comment),
+                            GestureDetector(
+                                onTap: () {
+                                  if (widget.isClick)
+                                    widget.showThread(widget.room);
+                                },
+                                child: Icon(Icons.comment)),
                             Text("${widget.room.comment}")
                           ],
                         )),

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:mind_matters/utility/snackbar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' as io;
 
@@ -26,14 +28,6 @@ class _AddPostState extends State<AddPost> {
     super.dispose();
   }
 
-  void _showSnackBar(BuildContext context,String text) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          content: Text(text)));
-    }
-  }
-
   Future<void> postData() async {
     var request = http.MultipartRequest(
         'POST',
@@ -42,22 +36,23 @@ class _AddPostState extends State<AddPost> {
     request.fields['RoomName'] = _postTitleController.text;
     // request.fields['description'] = _postDescriptionController.text;
     request.headers['Authorization'] =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJlNGQ4NDU1NTdmZTMwY2JiODI1MDQiLCJ0eXBlIjoiTGF5bWVuIiwiaWF0IjoxNzE0NDg3NTQwLCJleHAiOjE3MTUwOTIzNDB9.D-tIdQS3f6vXS_aL7JOQIdY0iMdgEWy5Y4kUhDHYVgs';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJlNGQ4NDU1NTdmZTMwY2JiODI1MDQiLCJ0eXBlIjoiTGF5bWVuIiwiaWF0IjoxNzIyNjY4Mjc0LCJleHAiOjE3MjMyNzMwNzR9.odkP3xktMWOtiozEtpPIOYDsZsPUeZEMjv542WTuaP8';
     request.headers['Content-Type'] = 'multipart/form-data';
-     if(_image!=null &&_image!.path!=null){
-    var image = io.File(_image!.path);
-    var imageStream = http.ByteStream(image.openRead());
+    if (_image != null && _image!.path != null) {
+      var image = io.File(_image!.path);
+      var imageStream = http.ByteStream(image.openRead());
 
-    var length = await image.length();
-    var multipart = http.MultipartFile("ThumbNail", imageStream, length,
-        filename: "image.jpg");
-    request.files.add(multipart);
-      }
+      var length = await image.length();
+      var multipart = http.MultipartFile("ThumbNail", imageStream, length,
+          filename: "image.jpg");
+      request.files.add(multipart);
+    }
     final response = await http.Response.fromStream(await request.send());
     if (response.statusCode == 200) {
-      _showSnackBar(context,"Room Saved");
+      SnackbarUtils.showSnackBar("Room Saved");
     } else {
       print(response.statusCode);
+      SnackbarUtils.showSnackBar("Failed to Save");
     }
   }
 
@@ -140,13 +135,16 @@ class _AddPostState extends State<AddPost> {
               _image == null
                   ? const Spacer()
                   : Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Container(
-                        child: Image.file(
-                          io.File(_image!.path),
-                          height: image_height,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+                      padding: const EdgeInsets.all(5),
+                      child: SizedBox(
+                        height: image_height/2,
+                        width: double.infinity,
+                        child: FittedBox(
+                          fit:BoxFit.cover,
+                          child: Image.file(
+                            io.File(_image!.path),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -169,11 +167,11 @@ class _AddPostState extends State<AddPost> {
                 ),
                 const Spacer(),
                 OutlinedButton(
-                    onPressed: () {
-                      postData();
+                    onPressed: () async {
+                      await postData();
                       Navigator.pop(context);
                     },
-                    child: Text("Submit")),
+                    child: const Text("Submit")),
               ])
             ]),
       ),

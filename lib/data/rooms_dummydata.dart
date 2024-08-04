@@ -11,7 +11,9 @@ var thread = [
       UpVotes: 1,
       DownVotes: 2,
       OwnerPP: "",
-      comment: 0),
+      comment: 0,
+      IsDownVote: false,
+      IsUpVote: true),
   Room(
       roomId: "123",
       RoomName: "134132",
@@ -22,7 +24,9 @@ var thread = [
       UpVotes: 1,
       DownVotes: 2,
       OwnerPP: "",
-      comment: 0),
+      comment: 0,
+      IsDownVote: false,
+      IsUpVote: true),
   Room(
       roomId: "123",
       RoomName: "134132",
@@ -33,7 +37,9 @@ var thread = [
       UpVotes: 1,
       DownVotes: 2,
       OwnerPP: "",
-      comment: 0),
+      comment: 0,
+      IsDownVote: false,
+      IsUpVote: true),
   Room(
       roomId: "123",
       RoomName: "134132",
@@ -44,7 +50,9 @@ var thread = [
       UpVotes: 1,
       DownVotes: 2,
       OwnerPP: "",
-      comment: 0),
+      comment: 0,
+      IsDownVote: false,
+      IsUpVote: true),
   Room(
       roomId: "123",
       RoomName: "134132",
@@ -55,5 +63,7 @@ var thread = [
       UpVotes: 1,
       DownVotes: 2,
       OwnerPP: "",
-      comment: 0),
+      comment: 0,
+      IsDownVote: false,
+      IsUpVote: true),
 ];

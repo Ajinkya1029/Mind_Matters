@@ -9,6 +9,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         textTheme:GoogleFonts.openSansTextTheme(),
         useMaterial3: true,
       ),
+       scaffoldMessengerKey: scaffoldMessengerKey,
       home: HomePage(),
     );
   }

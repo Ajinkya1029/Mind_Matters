@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:mind_matters/screens/forum_screen.dart';
 import 'package:mind_matters/component/add_post.dart';
 import 'package:mind_matters/screens/search_screen.dart';
